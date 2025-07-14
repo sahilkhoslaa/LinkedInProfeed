@@ -1,6 +1,8 @@
 // content.js
 let hiddenTags = [];
 
+let querySelector = '.feed-shared-update-v2, .feed-shared-update, .scaffold-finite-scroll__content, .relative > div[data-urn*="urn:li:activity"]';
+
 // Function to load tags from storage
 function loadTags() {
     return new Promise((resolve) => {
@@ -55,7 +57,7 @@ function processNewPosts(nodes) {
             // A common pattern is a div with a role of "article" or a specific data-urn.
             // Let's try a common class name for feed items.
 
-            const postElements = node.querySelectorAll('.feed-shared-update-v2, .feed-shared-update, .scaffold-finite-scroll__content > div[data-urn*="urn:li:activity"]');
+            const postElements = node.querySelectorAll(querySelector);
 
             postElements.forEach(post => {
                 if (shouldHidePost(post)) {
@@ -79,7 +81,7 @@ const observer = new MutationObserver((mutations) => {
 // This will cover initial page load and dynamic content loading
 loadTags().then(() => {
     // Initial scan of existing posts on page load
-    const initialPosts = document.querySelectorAll('.feed-shared-update-v2, .feed-shared-update, .scaffold-finite-scroll__content > div[data-urn*="urn:li:activity"]');
+    const initialPosts = document.querySelectorAll(querySelector);
     initialPosts.forEach(post => {
         if (shouldHidePost(post)) {
             hidePost(post);
@@ -104,7 +106,7 @@ chrome.storage.onChanged.addListener((changes, namespace) => {
     if (namespace === 'sync' && changes.hiddenTags) {
         loadTags().then(() => {
             // Re-process all visible posts with new tags
-            const allVisiblePosts = document.querySelectorAll('.feed-shared-update-v2, .feed-shared-update, .scaffold-finite-scroll__content, .relative > div[data-urn*="urn:li:activity"]');
+            const allVisiblePosts = document.querySelectorAll(querySelector);
             allVisiblePosts.forEach(post => {
                 // Ensure post is visible before attempting to hide it again
                 if (post.style.display !== 'none') {
