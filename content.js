@@ -49,6 +49,7 @@ function processNewPosts(nodes) {
             // Common selectors for feed posts include:
             // .feed-shared-update-v2
             // .feed-shared-update
+            // .relative
             // .scaffold-finite-scroll__content > div
             // For robustness, we'll look for elements that are likely individual posts.
             // A common pattern is a div with a role of "article" or a specific data-urn.
